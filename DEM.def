@@ -1,0 +1,102 @@
+[Info]
+name = "Dead Explosion Mother"
+displayname = "Dead Explosion Mother"
+mugenversion = 1.1
+ikemenversion = 0.99
+author = "Foobs"
+localcoord = 320,240
+portraitscale = .5,.5
+
+; Files for the player
+[Files]
+sprite  = DEM.sff
+anim    = DEM.def
+cmd = DEM.def
+cns = DEM.def
+st = DEM.zss
+;movelist = movelist.dat     ;Ikemen feature: Movelist
+
+[Map]
+ignore_io = 1
+
+;=========================Animations==============================
+
+[Begin Action 0]
+-1,-1,0,0,-1
+
+[Begin Action 181]
+-1,-1,0,0,-1
+
+[Begin Action 1000]
+1000,0,0,0,-1
+
+[Begin Action 1001]
+1001,0,0,0,-1
+
+[Begin Action 1002]
+1002,0,0,0,60,,AS256D0
+interpolate blend
+1002,0,0,0,60,,AS0D256
+
+;==========================Commands==============================
+[Command]
+name = "/x"
+command = /$x
+time = 1
+
+[Command]
+name = "/z"
+command = /$z
+time = 1
+
+[Command]
+name = "~z"
+command = ~z
+time = 1
+
+;===================Common bullshit override=====================
+; initialize
+[Statedef 5900]
+anim = -2
+physics = N
+
+[State 5900, palette]
+trigger1 = time = 0
+type = remappal
+source = 1, 1
+dest = 1, 1
+
+[State 5900, transition]
+trigger1 = time
+type = changestate
+value = 0
+
+; stand
+[Statedef 0]
+anim = -2
+physics = N
+
+; time over
+[Statedef 175]
+anim = -2
+physics = N
+
+; win
+[Statedef 180]
+anim = -2
+physics = N
+
+; gethit
+[Statedef 5030]
+anim = -2
+physics = N
+
+[State 5030, transition]
+trigger1 = 1
+type = changestate
+value = 5150
+
+; lose
+[Statedef 5150]
+anim = -2
+physics = N

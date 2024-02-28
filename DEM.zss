@@ -1,0 +1,81 @@
+[Statedef -4]
+ignorehitpause {
+	
+	# basic movement
+	if command = "/x" {let dis = 6;}
+	else {let dis = 3;}
+
+	if command = "holdfwd" {posadd{x:$dis;}}
+	if command = "holdback"{posadd{x:-$dis;}}
+	if command = "holdup" && pos y > topedge {posadd{y:-$dis;}}
+	if command = "holddown" && pos y < bottomedge {posadd{y:$dis;}}
+
+	# lifebars toggle
+	if command = "y" {map(dem_lifebars):=cond(!map(dem_lifebars),1,0);}
+	if map(dem_lifebars) {assertspecial{flag:nobardisplay}}
+
+	# zoom toggle
+	if command = "/z" {zoom{scale:1.4; pos: pos x/camerazoom, pos y/camerazoom; lag:0.8;}}
+	else if command = "~z" {zoom{scale:1; pos: pos x/camerazoom, pos y/camerazoom; lag:0.9;}}
+
+	# free movement/p2 camera toggle
+	if command = "a" {map(dem_cam):=cond(!map(dem_cam),1,0);}
+	if map(dem_cam) {posset{x:p2,pos x; y:p2,pos y}}
+
+	# freeze p2
+	if command = "b" {
+	map(dem_cam):=0;
+	map(dem_frz):=cond(!map(dem_frz),1,0);
+	}
+
+	# hide p2
+	if command = "c" {
+	map(dem_cam):=0;
+	map(dem_frz):=0;
+	map(dem_inv):=cond(!map(dem_inv),1,0);
+	}
+	
+	# hud toggle
+	if command = "start" {
+	map(dem_lifebars):=cond(!numexplod(1000),1,0);
+	map(dem_hud):=cond(!numexplod(1000),1,0);
+	}
+		
+	if map(dem_hud) {
+	# crosshairs
+		explod{id:1000; anim:1000; space:screen; scale: 0.5,0.5; ontop:1; pos:0,0;}
+		explod{id:1000; anim:1000; space:screen; scale: 0.5,0.5; ontop:1; pos:0,screenheight; vfacing:-1;}
+		explod{id:1000; anim:1000; space:screen; scale: 0.5,0.5; ontop:1; pos:screenwidth,0; facing:-1;}
+		explod{id:1000; anim:1000; space:screen; scale: 0.5,0.5; ontop:1; pos:screenwidth,screenheight; vfacing:-1; facing:-1;}
+	
+	# small crosshairs
+		explod{id:1000; anim:1000; space:screen; scale: 0.25,0.25; ontop:1; pos:screenwidth/2-25,screenheight/2-25;}
+		explod{id:1000; anim:1000; space:screen; scale: 0.25,0.25; ontop:1; pos:screenwidth/2-25,screenheight/2+25; vfacing:-1;}
+		explod{id:1000; anim:1000; space:screen; scale: 0.25,0.25; ontop:1; pos:screenwidth/2+25,screenheight/2-25; facing:-1;}
+		explod{id:1000; anim:1000; space:screen; scale: 0.25,0.25; ontop:1; pos:screenwidth/2+25,screenheight/2+25; vfacing:-1; facing:-1;}
+	
+	# REC
+		explod{id:1000; anim:1001; space:screen; scale: 0.5,0.5; ontop:1; pos:0,0;}
+	
+	# red circle
+		explod{id:1000; anim:1002; space:screen; scale: 0.5,0.5; ontop:1; pos:0,0; removetime:-1;}
+	}
+	else {removeexplod{id:1000;}}
+
+	# mom
+	camera{view:follow; followid:id}
+	ctrlset{value:1;}
+	assertspecial{flag:nohardcodedkeys; flag2:noautoturn; flag3:timerfreeze;}
+	assertspecial{flag:nointroreset; flag2:roundnotskip;}
+	playerpush{value:0}
+	nothitby{value:SCA}
+
+	# p2
+	assertspecial{flag:noautoturn; redirectid:p2,id}
+	
+	if map(dem_frz) || map(dem_inv) {
+	pause{time:1; movetime:1; pausebg:cond(map(dem_frz),1,0);}
+	if map(dem_inv) {assertspecial{flag:invisible; redirectid:p2,id}}
+	}
+
+}
