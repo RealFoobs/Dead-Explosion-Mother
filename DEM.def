@@ -7,14 +7,16 @@ author = "Foobs"
 localcoord = 320,240
 portraitscale = .5,.5
 
-; Files for the player
 [Files]
 sprite  = DEM.sff
 anim    = DEM.def
 cmd = DEM.def
 cns = DEM.def
 st = DEM.zss
-;movelist = movelist.dat     ;Ikemen feature: Movelist
+movelist = DEM_movelist.dat
+
+[Quotes]
+victory0 = "That boy was useless to the very end..."
 
 [Map]
 ignore_io = 1
