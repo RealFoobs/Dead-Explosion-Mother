@@ -1,3 +1,6 @@
+#[function player(f)]
+#if ID =! player($f),ID {}
+
 [Statedef -4]
 ignorehitpause {
 	
@@ -15,22 +18,30 @@ ignorehitpause {
 	if map(dem_lifebars) {assertspecial{flag:nobardisplay}}
 
 	# zoom toggle
-	if command = "/z" {zoom{scale:1.4; pos: pos x/camerazoom, pos y/camerazoom; lag:0.8;}}
-	else if command = "~z" {zoom{scale:1; pos: pos x/camerazoom, pos y/camerazoom; lag:0.9;}}
-
+	if command = "z" {
+		if map(dem_zoom) < 0.5 {map(dem_zoom):= map(dem_zoom)+0.25;}
+		else if map(dem_zoom) = 0.5 {map(dem_zoom):= 2;}
+		else {map(dem_zoom):= 0;}
+	}
+	if map(dem_zoom) {zoom{scale:1+map(dem_zoom); pos: pos x/camerazoom, pos y/camerazoom; lag:0.8; stagebound:1;}}
+	
 	# free movement/p2 camera toggle
-	if command = "a" {map(dem_cam):=cond(!map(dem_cam),1,0);}
-	if map(dem_cam) {posset{x:p2,pos x; y:p2,pos y}}
+	if stateno = 5900 {map(dem_cam):= playerno;}
+	let f = map(dem_cam);
+	if command = "a" {
+		if $f < 9 && playeridexist(player($f+1),ID) {map(dem_cam):= $f+1;}
+		else if $f < 9 && playeridexist(player($f+2),ID) {map(dem_cam):= $f+2;}
+		else {map(dem_cam):= 1;}
+		}
+	if player($f),ID != ID {posset{x:player($f),pos x; y:player($f),pos y;}}
 
 	# freeze p2
 	if command = "b" {
-	map(dem_cam):=0;
 	map(dem_frz):=cond(!map(dem_frz),1,0);
 	}
 
 	# hide p2
 	if command = "c" {
-	map(dem_cam):=0;
 	map(dem_frz):=0;
 	map(dem_inv):=cond(!map(dem_inv),1,0);
 	}
@@ -63,7 +74,7 @@ ignorehitpause {
 	else {removeexplod{id:1000;}}
 
 	# mom
-	camera{view:follow; followid:id}
+	if abs(leftedge) > 140 && abs(rightedge) > 140 {camera{view:follow; followid:id}}
 	ctrlset{value:1;}
 	assertspecial{flag:nohardcodedkeys; flag2:noautoturn; flag3:timerfreeze;}
 	assertspecial{flag:nointroreset; flag2:roundnotskip;}
@@ -71,11 +82,11 @@ ignorehitpause {
 	nothitby{value:SCA}
 
 	# p2
-	assertspecial{flag:noautoturn; redirectid:p2,id}
+	# assertspecial{flag:noautoturn; redirectid:p2,id} # can cause issues with custom input buffers
 	
 	if map(dem_frz) || map(dem_inv) {
 	pause{time:1; movetime:1; pausebg:cond(map(dem_frz),1,0);}
-	if map(dem_inv) {assertspecial{flag:invisible; redirectid:p2,id}}
+	if map(dem_inv) {for i = 1; 8; 1 {assertspecial{flag:invisible; redirectid:player($i),id}}}
 	}
 
 }

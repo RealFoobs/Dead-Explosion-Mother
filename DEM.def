@@ -15,11 +15,11 @@ cns = DEM.def
 st = DEM.zss
 movelist = DEM_movelist.dat
 
-[Quotes]
-victory0 = "That boy was useless to the very end..."
-
 [Map]
 ignore_io = 1
+
+[Quotes]
+victory0 = "That boy was useless to the very end..."
 
 ;=========================Animations==============================
 
