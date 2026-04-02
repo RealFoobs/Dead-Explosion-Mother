@@ -102,3 +102,61 @@ value = 5150
 [Statedef 5150]
 anim = -2
 physics = N
+
+
+;===================Commands=====================
+
+[Command]
+name = "a"
+command = a
+time = 1
+
+[Command]
+name = "b"
+command = b
+time = 1
+
+[Command]
+name = "c"
+command = c
+time = 1
+
+[Command]
+name = "x"
+command = x
+time = 1
+
+[Command]
+name = "y"
+command = y
+time = 1
+
+[Command]
+name = "z"
+command = z
+time = 1
+
+[Command]
+name = "start"
+command = s
+time = 1
+
+[Command]
+name = "holdfwd";Required (do not remove)
+command = /$F
+time = 1
+
+[Command]
+name = "holdback";Required (do not remove)
+command = /$B
+time = 1
+
+[Command]
+name = "holdup" ;Required (do not remove)
+command = /$U
+time = 1
+
+[Command]
+name = "holddown";Required (do not remove)
+command = /$D
+time = 1
